@@ -10,10 +10,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_22_051846) do
+ActiveRecord::Schema.define(version: 2021_11_23_223547) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "appointments", force: :cascade do |t|
+    t.date "time"
+    t.bigint "staff_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["staff_id"], name: "index_appointments_on_staff_id"
+    t.index ["user_id"], name: "index_appointments_on_user_id"
+  end
+
+  create_table "procedures", force: :cascade do |t|
+    t.string "action"
+    t.string "duration"
+    t.bigint "staff_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["staff_id"], name: "index_procedures_on_staff_id"
+  end
+
+  create_table "staffs", force: :cascade do |t|
+    t.string "doctor"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "username"
@@ -22,4 +47,7 @@ ActiveRecord::Schema.define(version: 2021_11_22_051846) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "appointments", "staffs"
+  add_foreign_key "appointments", "users"
+  add_foreign_key "procedures", "staffs"
 end

@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::API
   include ActionController::Cookies
+  before_action :confirm_authentication
 
   private
 
@@ -8,7 +9,7 @@ class ApplicationController < ActionController::API
   end
 
   def confirm_authentication
-    return json: {error: "you must be logged in to proceed"}, status: :unauthorized unless current_user
+    return render json: {error: "you must be logged in to proceed"}, status: :unauthorized unless current_user
   end
 
 end
